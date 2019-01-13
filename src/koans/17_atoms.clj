@@ -2,6 +2,12 @@
   (:require [koan-engine.core :refer :all]))
 
 (def atomic-clock (atom 0))
+; atoms are a more-limited version of refs
+; anything you can do with an atom you could also do with a ref, but NOT vice versa
+; For one thing, atoms lack thread safety
+; For another, you cannot run __transactions__ with them, so no "all or none" guarantee
+; The upside is that atoms have a simpler syntax than refs, with less ceremony overall
+; Also, ClojureScript only gives you atoms, not refs, whether you like it or not
 
 (meditations
   "Atoms are like refs"
@@ -10,8 +16,11 @@
   "You can change at the swap meet"
   (= 1 (do
          (swap! atomic-clock inc)
-         ; I would have called this opertion alter!, becuase swap! *strongly*
+         ; I would have called this opertion (alter!), becuase swap! *strongly*
          ; implies to me that you are going to provide a new _value_, not a fn!
+         ; but atoms use (reset!) for that - another name I would change!
+         ; because "reset!" strongly implies to me setting a value of nil or 0 or empty
+         ; but the terms are what they are, so get over it!
          @atomic-clock))
 
   "Keep taxes out of this: swapping requires no transaction"
