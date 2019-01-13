@@ -2,18 +2,18 @@
   (:require [koan-engine.core :refer :all]))
 
 (meditations
-  "You may have done more with Java than you know"
-  (= __ (class "warfare")) ; hint: try typing (javadoc "warfare") in the REPL
+  "You may have done more with Java than you know" ; i.e. the class of "Warfare" is String
+  (= String (class "warfare")) ; hint: try typing (javadoc "warfare") in the REPL
 
   "The dot signifies easy and direct Java interoperation"
-  (= __ (.toUpperCase "select * from"))
+  (= "SELECT * FROM" (.toUpperCase "select * from"))
 
   "But instance method calls are very different from normal functions"
-  (= ["SELECT" "FROM" "WHERE"] (map ___ ["select" "from" "where"]))
+  (= ["SELECT" "FROM" "WHERE"] (map #(.toUpperCase %) ["select" "from" "where"]))
 
-  "Constructing might be harder than breaking"
-  (= 10 (let [latch (java.util.concurrent.CountDownLatch. __)]
+  "Constructing might be harder than breaking" ; i.e. because of the long namespace 
+  (= 10 (let [latch (java.util.concurrent.CountDownLatch. 10)]
           (.getCount latch)))
 
-  "Static methods are slashing prices!"
-  (== __ (Math/pow 2 10)))
+  "Static methods are slashing prices!" ; Math (like String) is always imported for you
+  (== 1024 (Math/pow 2 10)))
