@@ -1,9 +1,9 @@
 (ns koans.16-refs
   (:require [koan-engine.core :refer :all]))
 
-(def the-world (ref "hello")) ; refs are like atoms, but thread-safe
-; In addition to be thread-safe, refs allow you to *coordinate* changes
-; between more than one ref, when they are both involved in a transaction.
+(def the-world (ref "hello")) ; Refs, like atoms, are always *thread-safe*
+; But unlike atoms, refs allow you to *coordinate* changes between more than one ref.
+; __Transactions__ are changes involving >1 ref, where the changes must be all or none.
 ; E.g. the classic two-bank-accounts scenario, where you need both changes or neither.
 ; So refs are not solely about thread-safety; they are also about __transactions__
 (def bizarro-world (ref {})) 

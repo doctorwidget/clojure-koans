@@ -2,12 +2,25 @@
   (:require [koan-engine.core :refer :all]))
 
 (def atomic-clock (atom 0))
-; atoms are a more-limited version of refs
-; anything you can do with an atom you could also do with a ref, but NOT vice versa
-; For one thing, atoms lack thread safety
-; For another, you cannot run __transactions__ with them, so no "all or none" guarantee
-; The upside is that atoms have a simpler syntax than refs, with less ceremony overall
+; Atoms are a more-limited version of refs; almost anything you can do with an atom you 
+; could also do with a ref, but NOT vice versa.  The one operation that refs can perform
+; that atoms cannot is the __transaction__. You cannot coordinate changes across multiple
+; atoms and guarantee that the changes will be all or none.  You *can* guarantee that 
+; any changes to one single atom will not be interrupted or abandoned partway through.
+;
+; The upside of atoms is a simpler syntax than refs, with less ceremony required for use
+; (i.e. you don't have to wrap all your changes to an atom in a (dosync) block).
 ; Also, ClojureScript only gives you atoms, not refs, whether you like it or not
+;
+; So it's important to remember that atoms *are* thread safe -- you never have to worry 
+; about another thread changing part of (say) an atom-wrapped map out from under you in
+; the middle of operating on it. Atoms have this safety because the functions used to
+; change them (swap! and reset! and etc) are guaranteed to be *synchronous*. Clojure 
+; handles all of the JVM-specific lock details under the hood for you, and you are free
+; to share a single atom across threads without worrying about it ending up in some kind
+; of oxymoronic / nonsensical state.  
+;
+
 
 (meditations
   "Atoms are like refs"
